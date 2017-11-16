@@ -1,8 +1,11 @@
 {
+    "manifest_version": 2,
+    "name": "Simple-Calculator",
+    "version": "1.0",
+    "description": "A Simple Calculator",
 
-  "manifest_version": 2,
-  "name": "Simple-Calculator",
-  "version": "1.0",
-  "description": "A Simple Calculator"
-
+    "icons": {
+        "48": "icon/Calculator_Logo.png"
+    }
+    
 }
