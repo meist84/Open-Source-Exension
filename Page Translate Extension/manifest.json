@@ -1,0 +1,12 @@
+{
+    "manifest_version": 2,
+    "name": "Translate Page",
+    "version": "1.0",
+    "description": "Translate page using Google Translate.",
+
+    "page_action": {
+        "browser_style": true,
+        "default_icon": "icons/google_translate.png",
+        "default_title": "Translate"
+    }
+}
