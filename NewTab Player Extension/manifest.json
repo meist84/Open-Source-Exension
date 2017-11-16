@@ -1,7 +1,13 @@
 {
-  "manifest_version": 2,
-  "name": "NewTab Player",
-  "version": "0.1",
+    "manifest_version": 2,
+    "name": "NewTab Player",
+    "version": "0.1",
+  
+    "description": "Change NewTab to a page which allows the users more usability",
+  
+    "icons": {
+      "18": "icon/music_18dp_2x.png",
+      "48": "icon/music_48dp_2x.png"
+    }
 
-  "description": "Change NewTab to a page which allows the users more usability"
-}
+  }
