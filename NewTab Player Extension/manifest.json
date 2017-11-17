@@ -8,6 +8,10 @@
     "icons": {
       "18": "icon/music_18dp_2x.png",
       "48": "icon/music_48dp_2x.png"
+    },
+
+    "chrome_url_overrides": {
+      "newtab": "index.html"
     }
 
   }
