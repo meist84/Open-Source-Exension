@@ -7,6 +7,7 @@ function protocolIsApplicable(tabUrl) {
     return APPLICABLE_PROTOCOLS.includes(url.protocol);
 }
 
+
 //user set option to always display the page action and return to true
 
 async function userAlwaysWantsIcon() {
@@ -18,7 +19,6 @@ async function userAlwaysWantsIcon() {
         return option.alwaysShowPageAction;
     }
 }
-
 async function pageIsInForeignLanguage(tabId) {
     // Get the page's language. If not found, assume it's foreign.
 
@@ -66,6 +66,7 @@ async function pageIsInForeignLanguage(tabId) {
     return true;
 }
 
+
 // Show the Translator page action in the browser address bar.
 
 async function initializePageAction(tab) {
@@ -78,7 +79,41 @@ async function initializePageAction(tab) {
     }
 }
 
+// run google translate
+function injectTranslatorCode() {
+    let googleCode = `
+        var docBody = document.body;
 
+        if (docBody !== null) {
+            let googleTranslateCallback = document.createElement('script');
+            googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }";
+            docBody.insertBefore(googleTranslateCallback, docBody.firstChild);
+
+            let googleTranslateScript = document.createElement('script');
+            googleTranslateScript.charset="UTF-8";
+            googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl=";
+            docBody.insertBefore(googleTranslateScript, docBody.firstChild);
+        }
+
+        // Firefox 53 will (erroneously?) complain if non-structured-clonable data isn't returned.
+        // https://github.com/mdn/webextensions-examples/issues/193
+        true;
+    `;
+    let executeScript = function(option) {
+        let injectDetails = {};
+
+        if ((typeof option.translationService !== "undefined") &&
+            (option.translationService === "microsoft")) {
+            injectDetails.code = microsoftCode;
+        } else {
+            injectDetails.code = googleCode;
+        }
+
+        browser.tabs.executeScript(injectDetails);
+    };
+
+    browser.storage.local.get("translationService").then(executeScript);
+}
 
 //initialized, add the page action for all tabs.
 browser.tabs.query({}).then((tabs) => {
@@ -98,4 +133,3 @@ browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
 
 // Bind clicks on the page action icon to the Extension
 browser.pageAction.onClicked.addListener(injectTranslatorCode);
-
