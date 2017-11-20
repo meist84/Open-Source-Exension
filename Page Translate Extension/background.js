@@ -65,3 +65,37 @@ async function pageIsInForeignLanguage(tabId) {
     // The page is foreign language
     return true;
 }
+
+// Show the Translator page action in the browser address bar.
+
+async function initializePageAction(tab) {
+    if (protocolIsApplicable(tab.url) &&
+        (await userAlwaysWantsIcon() === true || await pageIsInForeignLanguage(tab.id) === true)
+    ) {
+        browser.pageAction.show(tab.id);
+    } else {
+        browser.pageAction.hide(tab.id);
+    }
+}
+
+
+
+//initialized, add the page action for all tabs.
+browser.tabs.query({}).then((tabs) => {
+    for (tab of tabs) {
+        initializePageAction(tab);
+    }
+});
+
+
+//When a  brower tab is updated, reset the page action for that tab.
+browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
+    if ((typeof changeInfo.status === "string") && (changeInfo.status === "complete")) {
+        initializePageAction(tab);
+    }
+});
+
+
+// Bind clicks on the page action icon to the Extension
+browser.pageAction.onClicked.addListener(injectTranslatorCode);
+
