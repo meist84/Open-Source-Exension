@@ -4,9 +4,18 @@
     "version": "1.0",
     "description": "Translate page using Google Translate.",
 
+    "permissions": [
+        "<all_urls>",
+        "activeTab",
+        "storage",
+        "tabs"
+    ],
     "page_action": {
         "browser_style": true,
         "default_icon": "icons/google_translate.png",
         "default_title": "Translate"
+    },
+    "background": {
+        "scripts": ["background.js"]
     }
 }
