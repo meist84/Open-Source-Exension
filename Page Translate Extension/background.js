@@ -18,3 +18,50 @@ async function userAlwaysWantsIcon() {
         return option.alwaysShowPageAction;
     }
 }
+
+async function pageIsInForeignLanguage(tabId) {
+    // Get the page's language. If not found, assume it's foreign.
+
+    try {
+        var pageLang = await browser.tabs.detectLanguage(tabId);
+    } catch (err) {
+        return true;
+    }
+
+    if (!pageLang || pageLang === "und") {
+        return true;
+    }
+
+
+    pageLang = pageLang.toLowerCase();
+
+    let navigatorLanguages = navigator.languages.map(navigatorLanguage => {
+        return navigatorLanguage.toLowerCase();
+    });
+
+    // Check if the page's language accurate matches any of browser's preferred languages
+    if (navigatorLanguages.includes(pageLang)) {
+        return false;
+    }
+
+    // Get array of the preference  languages from the browser
+    let preferenceLangtags = navigatorLanguages.filter(language => {
+        return language.indexOf('-') === -1;
+    });
+
+    // If no preference  language specified in browser, the user has to removed it.
+    if (preferenceLangtags.length === 0) {
+        return true;
+    }
+
+    // Get page's language tag
+    let pagetag = pageLang.split('-', 1)[0];
+
+    // Look for preference  language tag match
+    if (preferenceLangtags.includes(pagetag)) {
+        return false;
+    }
+
+    // The page is foreign language
+    return true;
+}
