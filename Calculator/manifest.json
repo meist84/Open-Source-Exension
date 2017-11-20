@@ -8,10 +8,14 @@
         "48": "icon/Calculator_Logo.png"
     },
 
+    "permissions": [
+        "clipboardWrite"
+    ],
+
     "browser_action": {
         "default_icon": "calculator_Logo.png",
         "default_title": "Simple-Calculator",
-        "default_popup": "",
+        "default_popup": "calculator.html",
         "browser_style": false
       }
     
